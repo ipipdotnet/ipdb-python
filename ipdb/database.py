@@ -8,18 +8,19 @@ import json
 from .meta import MetaData
 from .info import IPInfo
 from .util import bytes2long
+from .exceptions import NoSupportIPv4Error, NoSupportIPv6Error, NoSupportLanguageError, DatabaseError
 
 
 class Reader:
 
-    meta = {}
+    _meta = {}
     data = b""
 
     file = False
     file_size = 0
 
-    v4offset = 0
-    v6offsetCache = {}
+    _v4offset = 0
+    _v6offsetCache = {}
 
     def __init__(self, name):
         self.file = open(name, "rb")
@@ -29,8 +30,12 @@ class Reader:
         meta_length = bytes2long(self.data[0], self.data[1], self.data[2], self.data[3])
         meta = json.loads(self.data[4:meta_length+4])
 
-        self.meta = MetaData(**meta)
+        self._meta = MetaData(**meta)
         self.data = self.data[4+meta_length:]
+
+    def _read_node(self, node, idx):
+        off = idx * 4 + node * 8
+        return bytes2long(self.data[off], self.data[off + 1], self.data[off + 2], self.data[off + 3])
 
     def _find_node(self, ip):
 
@@ -43,65 +48,72 @@ class Reader:
         node = 0
         key = ip.packed[0:2]
         if bit_count == 32:
-            if self.v4offset == 0:
+            if self._v4offset == 0:
                 i = 0
                 while i < 96:
                     if i >= 80:
-                        node = self.read_node(node, 1)
+                        node = self._read_node(node, 1)
                     else:
-                        node = self.read_node(node, 0)
+                        node = self._read_node(node, 0)
                     i += 1
-                self.v4offset = node
+                self._v4offset = node
             else:
-                node = self.v4offset
+                node = self._v4offset
         else:
-            val = self.v6offsetCache.get(key, -1)
+            val = self._v6offsetCache.get(key, -1)
             if val > -1:
                 i = 16
                 node = val
 
         while i < bit_count:
-            if node > self.meta.node_count:
+            if node > self._meta.node_count:
                 break
-            node = self.read_node(node, (1 & (ip.packed[i >> 3] >> 7 - (i % 8))))
+            node = self._read_node(node, (1 & (ip.packed[i >> 3] >> 7 - (i % 8))))
             i += 1
             if i == 16:
-                self.v6offsetCache[key] = node
+                self._v6offsetCache[key] = node
 
         return node
 
-    def read_node(self, node, idx):
-        off = idx * 4 + node * 8
-        return bytes2long(self.data[off], self.data[off + 1], self.data[off + 2], self.data[off + 3])
-
     def _resolve(self, node):
-        resolved = node - self.meta.node_count + self.meta.node_count * 8
+        resolved = node - self._meta.node_count + self._meta.node_count * 8
         size = bytes2long(0, 0, self.data[resolved], self.data[resolved + 1])
         return self.data[resolved+2:resolved+2 + size]
 
     def find(self, addr, language = "CN"):
-        node = self._find_node(ipaddress.ip_address(addr))
+        off = self._meta.languages.get(language)
+        if off is None:
+            raise NoSupportLanguageError(language + " is not support")
+
+        ipv = ipaddress.ip_address(addr)
+        if ipv.version == 6:
+            if self.is_support_ipv6() is False:
+                raise NoSupportIPv6Error("database is not support ipv6")
+        elif ipv.version == 4:
+            if self.is_support_ipv4() is False:
+                raise NoSupportIPv4Error("database is not support ipv4")
+
+        node = self._find_node(ipv)
         if node is None:
             return None
 
-        bytes = self._resolve(node)
-        if bytes is None:
+        bs = self._resolve(node)
+        if bs is None:
             return None
 
-        tmp = bytes.decode("utf-8").split("\t")
+        tmp = bs.decode("utf-8").split("\t")
+        end = off + len(self._meta.fields)
+        if len(tmp) < end:
+            raise DatabaseError("database is error")
 
-        off = self.meta.languages.get(language)
-        if off is None:
-            return None
-
-        return tmp[off:off+len(self.meta.fields)]
+        return tmp[off:off+len(self._meta.fields)]
 
     def find_map(self, addr, language = 'CN'):
         loc = self.find(addr, language)
         if loc is None:
             return None
         m = {}
-        for idx, value in enumerate(self.meta.fields):
+        for idx, value in enumerate(self._meta.fields):
             m[value] = loc[idx]
         return m
 
@@ -110,3 +122,21 @@ class Reader:
         if m is None:
             return None
         return IPInfo(**m)
+
+    def get_meta_data(self):
+        return self._meta
+
+    def support_languages(self):
+        ls = []
+        for p in self._meta.languages:
+            ls.append(p)
+        return ls
+
+    def support_fields(self):
+        return self._meta.fields
+
+    def is_support_ipv4(self):
+        return (self._meta.ip_version & 0x01) == 0x01
+
+    def is_support_ipv6(self):
+        return (self._meta.ip_version & 0x02) == 0x02

@@ -1,7 +1,14 @@
 import ipdb
 
 db = ipdb.Reader("C:/WORK/tiantexin/framework/library/ip/mydata6.ipdb")
-print(db.find("2001:250:200::"))
+
+print(db.support_languages())
+
+try:
+    print(db.find("2001:250:200::", "CN"))
+except Exception as e:
+    print(e)
+
 print(db.find_map("2001:250:200::"))
 
 info = db.find_info("2a06:e881:3800::")
