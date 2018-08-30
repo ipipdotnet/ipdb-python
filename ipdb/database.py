@@ -31,6 +31,11 @@ class Reader:
         meta = json.loads(self.data[4:meta_length+4])
 
         self._meta = MetaData(**meta)
+        if len(self._meta.languages) == 0 or len(self._meta.fields) == 0:
+            raise DatabaseError("database meta error")
+        if self.file_size != (4 + meta_length + self._meta.total_size):
+            raise DatabaseError("database size error")
+
         self.data = self.data[4+meta_length:]
 
     def _read_node(self, node, idx):
@@ -140,3 +145,6 @@ class Reader:
 
     def is_support_ipv6(self):
         return (self._meta.ip_version & 0x02) == 0x02
+
+    def build_utc_time(self):
+        return self._meta.build

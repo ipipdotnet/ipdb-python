@@ -1,6 +1,6 @@
 import ipdb
 
-db = ipdb.Reader("C:/WORK/tiantexin/framework/library/ip/mydata6.ipdb")
+db = ipdb.Reader("c:/work/tiantexin/bb/v6/mydata6vipday4.ipdb")
 
 print(db.support_languages())
 
