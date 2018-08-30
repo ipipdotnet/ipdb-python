@@ -4,7 +4,7 @@ from setuptools import setup
 
 setup(
     name='ipip-ipdb',
-    version="0.2.0",
+    version="0.2.1",
     description=(
         'IPIP.net 官方支持维护的 IP 数据库 ipdb 格式解析代码库'
     ),

@@ -78,12 +78,17 @@ class Reader:
             if i == 16:
                 self._v6offsetCache[key] = node
 
-        return node
+        if node > self._meta.node_count:
+            return node
+        elif node == self._meta.node_count:
+            return 0
+
+        return None
 
     def _resolve(self, node):
         resolved = node - self._meta.node_count + self._meta.node_count * 8
         size = bytes2long(0, 0, self.data[resolved], self.data[resolved + 1])
-        return self.data[resolved+2:resolved+2 + size]
+        return self.data[resolved+2:resolved+2+size]
 
     def find(self, addr, language = "CN"):
         off = self._meta.languages.get(language)
