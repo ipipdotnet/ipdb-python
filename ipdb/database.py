@@ -16,16 +16,15 @@ class Reader:
     _meta = {}
     data = b""
 
-    file = False
-    file_size = 0
+    _file_size = 0
 
     _v4offset = 0
     _v6offsetCache = {}
 
     def __init__(self, name):
-        self.file = open(name, "rb")
-        self.data = self.file.read()
-        self.file_size = len(self.data)
+        file = open(name, "rb")
+        self.data = file.read()
+        self._file_size = len(self.data)
 
         meta_length = bytes2long(self.data[0], self.data[1], self.data[2], self.data[3])
         meta = json.loads(self.data[4:meta_length+4])
@@ -33,7 +32,7 @@ class Reader:
         self._meta = MetaData(**meta)
         if len(self._meta.languages) == 0 or len(self._meta.fields) == 0:
             raise DatabaseError("database meta error")
-        if self.file_size != (4 + meta_length + self._meta.total_size):
+        if self._file_size != (4 + meta_length + self._meta.total_size):
             raise DatabaseError("database size error")
 
         self.data = self.data[4+meta_length:]
@@ -49,7 +48,7 @@ class Reader:
         else:
             bit_count = 32
 
-        i = 0
+        idx = 0
         node = 0
         key = ip.packed[0:2]
         if bit_count == 32:
@@ -67,27 +66,28 @@ class Reader:
         else:
             val = self._v6offsetCache.get(key, -1)
             if val > -1:
-                i = 16
+                idx = 16
                 node = val
 
-        while i < bit_count:
+        while idx < bit_count:
             if node > self._meta.node_count:
                 break
-            node = self._read_node(node, (1 & (ip.packed[i >> 3] >> 7 - (i % 8))))
-            i += 1
-            if i == 16:
+            node = self._read_node(node, (1 & (ip.packed[idx >> 3] >> 7 - (idx % 8))))
+            idx += 1
+            if idx == 16:
                 self._v6offsetCache[key] = node
-
+        
         if node > self._meta.node_count:
             return node
         elif node == self._meta.node_count:
             return 0
-
-        return None
+        raise DatabaseError("database is error")
 
     def _resolve(self, node):
         resolved = node - self._meta.node_count + self._meta.node_count * 8
         size = bytes2long(0, 0, self.data[resolved], self.data[resolved + 1])
+        if (resolved+2+size) > len(self.data):
+            raise DatabaseError("database is error")
         return self.data[resolved+2:resolved+2+size]
 
     def find(self, addr, language = "CN"):
