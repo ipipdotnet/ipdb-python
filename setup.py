@@ -4,9 +4,9 @@ from setuptools import setup
 
 setup(
     name='ipip-ipdb',
-    version="0.2.1",
+    version="0.2.2",
     description=(
-        'IPIP.net 官方支持维护的 IP 数据库 ipdb 格式解析代码库'
+        'IPIP.net officially supported IP database ipdb format parsing library'
     ),
     author='IPIP.net',
     author_email='frk@ipip.net',
