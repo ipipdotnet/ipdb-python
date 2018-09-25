@@ -27,7 +27,7 @@ class Reader:
         self._file_size = len(self.data)
 
         meta_length = bytes2long(self.data[0], self.data[1], self.data[2], self.data[3])
-        meta = json.loads(self.data[4:meta_length+4])
+        meta = json.loads(str(self.data[4:meta_length+4], 'utf-8'))
 
         self._meta = MetaData(**meta)
         if len(self._meta.languages) == 0 or len(self._meta.fields) == 0:
