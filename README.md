@@ -8,7 +8,7 @@ IPIP.net officially supported IP database ipdb format parsing library
 <code>pip install ipip-ipdb</code>
 </pre>
 
-## Dependents ( python 2.x )
+## Dependents ( python 2.x or before python 3.3 )
 <pre><code>pip install ipaddress</code></pre>
 
 ## Code Example
