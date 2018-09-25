@@ -7,6 +7,10 @@ IPIP.net officially supported IP database ipdb format parsing library
 <pre>
 <code>pip install ipip-ipdb</code>
 </pre>
+
+## Dependents ( python 2.x )
+<pre><code>pip install ipaddress</code></pre>
+
 ## Code Example
   <pre><code>
 import ipdb
