@@ -69,10 +69,11 @@ class Reader:
                 idx = 16
                 node = val
 
+        packed = bytearray(ip.packed)
         while idx < bit_count:
             if node > self._meta.node_count:
                 break
-            node = self._read_node(node, (1 & (ip.packed[idx >> 3] >> 7 - (idx % 8))))
+            node = self._read_node(node, (1 & (packed[idx >> 3] >> 7 - (idx % 8))))
             idx += 1
             if idx == 16:
                 self._v6offsetCache[key] = node

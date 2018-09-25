@@ -12,6 +12,8 @@ def bytes2long(a, b, c, d):
 
 
 def convert(v):
+    if v == "" or v == 0:
+        return 0
     if sys.version_info.major >= 3:
         return v
     else:
