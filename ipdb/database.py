@@ -8,7 +8,7 @@ import json
 from .meta import MetaData
 from .info import IPInfo
 from .util import bytes2long
-from .exceptions import NoSupportIPv4Error, NoSupportIPv6Error, NoSupportLanguageError, DatabaseError
+from .exceptions import NoSupportIPv4Error, NoSupportIPv6Error, NoSupportLanguageError, DatabaseError, IPNotFound
 
 
 class Reader:
@@ -82,7 +82,7 @@ class Reader:
             return node
         elif node == self._meta.node_count:
             return 0
-        raise DatabaseError("database is error")
+        raise IPNotFound("ip not found")
 
     def _resolve(self, node):
         resolved = node - self._meta.node_count + self._meta.node_count * 8

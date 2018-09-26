@@ -7,14 +7,14 @@
 class DatabaseError(Exception):
     pass
 
-
 class NoSupportLanguageError(Exception):
     pass
-
 
 class NoSupportIPv6Error(Exception):
     pass
 
-
 class NoSupportIPv4Error(Exception):
+    pass
+
+class IPNotFound(Exception):
     pass
