@@ -5,6 +5,7 @@
 
 import ipaddress
 import json
+import sys
 from .meta import MetaData
 from .info import IPInfo
 from .util import bytes2long
@@ -27,7 +28,10 @@ class Reader:
         self._file_size = len(self.data)
 
         meta_length = bytes2long(self.data[0], self.data[1], self.data[2], self.data[3])
-        meta = json.loads(str(self.data[4:meta_length+4], 'utf-8'))
+        if sys.version_info < (3,0):
+            meta = json.loads(str(self.data[4:meta_length + 4]))
+        else:
+            meta = json.loads(str(self.data[4:meta_length + 4], 'utf-8'))
 
         self._meta = MetaData(**meta)
         if len(self._meta.languages) == 0 or len(self._meta.fields) == 0:
