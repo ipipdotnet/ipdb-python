@@ -6,10 +6,19 @@
 import ipaddress
 import json
 import sys
-from .meta import MetaData
-from .info import IPInfo
+
 from .util import bytes2long
 from .exceptions import NoSupportIPv4Error, NoSupportIPv6Error, NoSupportLanguageError, DatabaseError, IPNotFound
+
+
+class MetaData(object):
+    def __init__(self, **kwargs):
+        self.fields = kwargs['fields']
+        self.node_count = kwargs['node_count']
+        self.total_size = kwargs['total_size']
+        self.build = kwargs['build']
+        self.languages = kwargs['languages']
+        self.ip_version = kwargs['ip_version']
 
 
 class Reader:
@@ -95,7 +104,7 @@ class Reader:
             raise DatabaseError("database is error")
         return self.data[resolved+2:resolved+2+size]
 
-    def find(self, addr, language = "CN"):
+    def find(self, addr, language):
         off = self._meta.languages.get(language)
         if off is None:
             raise NoSupportLanguageError(language + " is not support")
@@ -123,7 +132,7 @@ class Reader:
 
         return tmp[off:off+len(self._meta.fields)]
 
-    def find_map(self, addr, language = 'CN'):
+    def find_map(self, addr, language):
         loc = self.find(addr, language)
         if loc is None:
             return None
@@ -132,11 +141,6 @@ class Reader:
             m[value] = loc[idx]
         return m
 
-    def find_info(self, addr, language = 'CN'):
-        m = self.find_map(addr, language)
-        if m is None:
-            return None
-        return IPInfo(**m)
 
     def get_meta_data(self):
         return self._meta
