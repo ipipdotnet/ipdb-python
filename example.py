@@ -68,3 +68,4 @@ def test_idc_list():
 
 test_city_ipv6()
 test_base_station()
+test_city_ipv4()
