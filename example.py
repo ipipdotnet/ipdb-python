@@ -8,7 +8,10 @@ def test_free():
     print(db.fields())
     print(db.build_time())
     print(db.find("1.1.1.1", "CN"))
+
+    print("ipdb reload", db.reload("c:/work/ipdb/city.free.ipdb"))
     print(db.find("118.28.1.1", "CN"))
+
 
     try:
         print(db.find("2000:FFFF:FFFF:FFFF:FFFF:FFFF:FFFF:FFFF", "CN"))
@@ -17,7 +20,7 @@ def test_free():
 
 
 def test_city_ipv4():
-    db = ipdb.City("c:/work/ipdb/city.ipv4.ipdb")
+    db = ipdb.City("c:/tiantexin/download/mydata4vipday4_cn.ipdb")
     print(db.is_ipv4(), db.is_ipv6())
     print(db.languages())
     print(db.fields())
@@ -66,6 +69,7 @@ def test_idc_list():
     print(db.find_map("1.1.1.1", "CN"))
     print(db.find_map("8.8.8.8", "CN"))
 
-test_city_ipv6()
-test_base_station()
-test_city_ipv4()
+test_free()
+# test_city_ipv6()
+# test_base_station()
+# test_city_ipv4()
