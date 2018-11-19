@@ -32,6 +32,14 @@ class District:
     def __init__(self, name):
         self.db = Reader(name)
 
+    def reload(self, name):
+        try:
+            db = Reader(name)
+            self.db = db
+            return True
+        except:
+            return False            
+
     def find(self, addr, language):
         return self.db.find(addr, language)
 
