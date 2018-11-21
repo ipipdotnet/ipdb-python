@@ -10,7 +10,7 @@ class DistrictInfo:
     country_name = ""
     region_name = ""
     city_name = ""
-    district_domain = ""
+    district_name = ""
     china_admin_code = ""
     covering_radius = ""
     latitude = ""
