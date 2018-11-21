@@ -2,7 +2,7 @@ import ipdb,sys
 
 
 def test_free():
-    db = ipdb.City("c:/work/ipdb/city.free.ipdb")
+    db = ipdb.City("c:/work/ipdb/mydata4vipweek2.ipdb")
     print(db.is_ipv4(), db.is_ipv6())
     print(db.languages())
     print(db.fields())
