@@ -93,8 +93,6 @@ class Reader:
         
         if node > self._meta.node_count:
             return node
-        elif node == self._meta.node_count:
-            return 0
         raise IPNotFound("ip not found")
 
     def _resolve(self, node):
@@ -117,14 +115,15 @@ class Reader:
             if self.is_support_ipv4() is False:
                 raise NoSupportIPv4Error("database is not support ipv4")
 
-        node = self._find_node(ipv)
-        if node is None:
+        try:
+            node = self._find_node(ipv)
+        except:
             return None
-
+        
         bs = self._resolve(node)
         if bs is None:
             return None
-
+        
         tmp = bs.decode("utf-8").split("\t")
         end = off + len(self._meta.fields)
         if len(tmp) < end:
