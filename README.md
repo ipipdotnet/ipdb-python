@@ -12,8 +12,7 @@ IPIP.net officially supported IP database ipdb format parsing library
 <pre><code>pip install ipaddress</code></pre>
 
 ## Code Example
-
-###（适用于IPDB格式的每周高级版，每日标准版，每日高级版，每日专业版，每日旗舰版）
+### 适用于IPDB格式的每周高级版，每日标准版，每日高级版，每日专业版，每日旗舰版
   <pre><code>
 import ipdb
 
@@ -52,11 +51,11 @@ currency_name : 当前国家货币名称    （每日旗舰版及其以上版本
 anycast : ANYCAST       （每日旗舰版及其以上版本包含）
 </pre>
 
-### (适用于IPDB格式的中国地区 IPv4 区县库)
+### 适用于IPDB格式的中国地区 IPv4 区县库
   <pre>
 import ipdb
 
-db = ipdb.District("c:/work/ipdb/china_district.ipdb")
+db = ipdb.District("/path/to/china_district.ipdb")
 print(db.is_ipv4(), db.is_ipv6())
 print(db.languages())
 print(db.fields())
@@ -65,3 +64,14 @@ print(db.find("1.12.13.255", "CN"))
 print(db.find_map("1.12.13.255", "CN"))
 print(db.find_info("1.12.13.255", "CN").country_name)
   </pre>
+
+### 适用于IPDB格式的基站 IPv4 库
+<pre>
+import ipdb
+db = ipdb.BaseStation("/path/to/base_station.ipdb")
+print(db.is_ipv4(), db.is_ipv6())
+print(db.languages())
+print(db.fields())
+print(db.build_time())
+print(db.find_map("117.136.83.55", "CN"))
+</pre>
