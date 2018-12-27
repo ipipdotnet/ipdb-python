@@ -1,3 +1,4 @@
+from  __future__ import unicode_literals
 import ipdb,sys
 
 
@@ -69,7 +70,8 @@ def test_idc_list():
     print(db.find_map("1.1.1.1", "CN"))
     print(db.find_map("8.8.8.8", "CN"))
 
-test_free()
-# test_city_ipv6()
-# test_base_station()
+test_city_ipv4()
+test_city_ipv6()
+test_base_station()
+test_district()
 # test_city_ipv4()
