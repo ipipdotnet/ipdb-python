@@ -19,10 +19,7 @@ class DistrictInfo:
     def __init__(self, **kwargs):
         self._map = kwargs
         for key in self._map:
-            self.__setattr__(key, self._map[key])
-
-    def __getattr__(self, item):
-        return self._map.get(item, "")
+            self.__dict__[key] = self._map[key]
 
 
 class District:
