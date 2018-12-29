@@ -169,12 +169,12 @@ class Database:
     db = None
     info = None
 
-    def __init__(self, name):
-        self.db = Reader(name)
+    def __init__(self, name, compression=None):
+        self.db = Reader(name, compression=compression)
 
-    def reload(self, name):
+    def reload(self, name, compression=None):
         try:
-            db = Reader(name)
+            db = Reader(name, compression=compression)
             self.db = db
             return True
         except:
