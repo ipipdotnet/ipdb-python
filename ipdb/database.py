@@ -8,6 +8,7 @@ import json
 import sys
 
 from .util import bytes2long
+from .util import read_file
 from .exceptions import NoSupportIPv4Error, NoSupportIPv6Error, NoSupportLanguageError, DatabaseError, IPNotFound
 
 
@@ -31,9 +32,8 @@ class Reader:
     _v4offset = 0
     _v6offsetCache = {}
 
-    def __init__(self, name):
-        file = open(name, "rb")
-        self.data = file.read()
+    def __init__(self, name, compression=None):
+        self.data = read_file(name, compression=compression)
         self._file_size = len(self.data)
 
         meta_length = bytes2long(self.data[0], self.data[1], self.data[2], self.data[3])
