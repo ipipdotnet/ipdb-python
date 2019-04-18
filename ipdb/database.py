@@ -90,11 +90,9 @@ class Reader:
             idx += 1
             if idx == 16:
                 self._v6offsetCache[key] = node
-        
+
         if node > self._meta.node_count:
             return node
-        elif node == self._meta.node_count:
-            return 0
         raise IPNotFound("ip not found")
 
     def _resolve(self, node):

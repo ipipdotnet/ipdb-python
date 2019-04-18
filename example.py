@@ -2,6 +2,7 @@ from  __future__ import unicode_literals
 import ipdb,sys
 
 
+
 def test_free():
     db = ipdb.City("c:/work/ipdb/mydata4vipweek2.ipdb")
     print(db.is_ipv4(), db.is_ipv6())
@@ -51,7 +52,19 @@ def test_district():
     print(db.languages())
     print(db.fields())
     print(db.build_time())
-    print(db.find("1.12.13.255", "CN"))
+    for A in range(223):
+        for B in range (255):
+            try:
+                print(db.find("%d.%d.114.144" % (A, B), "CN"))
+            except ipdb.IPNotFound as e:
+                print(e)
+
+    try:
+        print(db.find("1.1.1.1", "CN"))
+    except ipdb.IPNotFound as e: # ip not found
+        print(e)
+    except ipdb.DatabaseError as e: # database file size error
+        print(e)
     print(db.find_map("1.12.13.255", "CN"))
     print(db.find_info("1.12.13.255", "CN").country_name)
 
@@ -70,8 +83,8 @@ def test_idc_list():
     print(db.find_map("1.1.1.1", "CN"))
     print(db.find_map("8.8.8.8", "CN"))
 
-test_city_ipv4()
-test_city_ipv6()
-test_base_station()
+# test_city_ipv4()
+# test_city_ipv6()
+# test_base_station()
 test_district()
 # test_city_ipv4()
