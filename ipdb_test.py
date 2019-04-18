@@ -9,7 +9,7 @@ class TestIPDb(unittest.TestCase):
         city = ipdb.City("c:/work/ipdb/city.ipv4.ipdb")
         print("ipdb.build.time:", city.build_time())
         for A in range(224):
-            ip_address = "%d.28.1.1" % A
+            ip_address = u"%d.28.1.1" % A
             print(ip_address, city.find(ip_address, "CN"))
             print(ip_address, city.find_map(ip_address, "CN"))
             print(ip_address, city.find_info(ip_address, "CN"))
@@ -21,7 +21,7 @@ class TestIPDb(unittest.TestCase):
         district = ipdb.District("c:/work/ipdb/china_district.ipdb")
         print("ipdb.build.time:", district.build_time())
         for A in range(224):
-            ip_address = "%d.28.1.1" % A
+            ip_address = u"%d.28.1.1" % A
             try:
                 print(ip_address, district.find(ip_address, "CN"))
                 print(ip_address, district.find_map(ip_address, "CN"))
@@ -35,7 +35,7 @@ class TestIPDb(unittest.TestCase):
         base_station = ipdb.BaseStation("c:/work/ipdb/base_station.ipdb")
         print("ipdb.build.time:", base_station.build_time())
         for A in range(224):
-            ip_address = "%d.28.1.1" % A
+            ip_address = u"%d.28.1.1" % A
             try:
                 print(ip_address, base_station.find(ip_address, "CN"))
                 print(ip_address, base_station.find_map(ip_address, "CN"))
