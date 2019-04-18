@@ -35,7 +35,7 @@ class Reader:
         file = open(name, "rb")
         self.data = file.read()
         self._file_size = len(self.data)
-
+        file.close()
         meta_length = bytes2long(self.data[0], self.data[1], self.data[2], self.data[3])
         if sys.version_info < (3,0):
             meta = json.loads(str(self.data[4:meta_length + 4]))
