@@ -8,6 +8,7 @@ import json
 import sys
 
 from .util import bytes2long
+from .util import read_file
 from .exceptions import NoSupportIPv4Error, NoSupportIPv6Error, NoSupportLanguageError, DatabaseError, IPNotFound
 
 
@@ -31,9 +32,8 @@ class Reader:
     _v4offset = 0
     _v6offsetCache = {}
 
-    def __init__(self, name):
-        file = open(name, "rb")
-        self.data = file.read()
+    def __init__(self, name, compression=None):
+        self.data = read_file(name, compression=compression)
         self._file_size = len(self.data)
         file.close()
         meta_length = bytes2long(self.data[0], self.data[1], self.data[2], self.data[3])
@@ -160,3 +160,47 @@ class Reader:
 
     def build_utc_time(self):
         return self._meta.build
+
+
+class Database:
+
+    db = None
+    info = None
+
+    def __init__(self, name, compression=None):
+        self.db = Reader(name, compression=compression)
+
+    def reload(self, name, compression=None):
+        try:
+            db = Reader(name, compression=compression)
+            self.db = db
+            return True
+        except:
+            return False
+
+    def find(self, addr, language):
+        return self.db.find(addr, language)
+
+    def find_map(self, addr, language):
+        return self.db.find_map(addr, language)
+
+    def find_info(self, addr, language):
+        m = self.db.find_map(addr, language)
+        if m is None:
+            return None
+        return self.info(**m)
+
+    def is_ipv4(self):
+        return self.db.is_support_ipv4()
+
+    def is_ipv6(self):
+        return self.db.is_support_ipv6()
+
+    def languages(self):
+        return self.db.support_languages()
+
+    def fields(self):
+        return self.db.support_fields()
+
+    def build_time(self):
+        return self.db.build_utc_time()

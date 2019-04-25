@@ -3,7 +3,7 @@
     :copyright: ©2018 by IPIP.net
 """
 
-
+import gzip
 import sys
 
 
@@ -18,3 +18,23 @@ def convert(v):
         return v
     else:
         return ord(v)
+
+
+def read_file(path, compression=None):
+    if compression is None:
+        return _read_file_default(path)
+    elif compression == 'gzip':
+        return _read_file_gzip(path)
+    raise Exception('unsupported compression type: {}'.format(compression))
+
+
+def _read_file_default(path):
+    with open(path, "rb") as f:
+        content = f.read()
+    return content
+
+
+def _read_file_gzip(path):
+    with gzip.open(path, "rb") as f:
+        content = f.read()
+    return content

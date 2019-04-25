@@ -76,3 +76,19 @@ print(db.fields())
 print(db.build_time())
 print(db.find_map("117.136.83.55", "CN"))
 </pre>
+
+### 支持加载压缩文件
+
+除了直接加载 `ipdb` 格式文件外，还可以加载压缩文件
+
+- 支持 `gzip`
+
+<pre>
+import ipdb
+db = ipdb.BaseStation("/path/to/base_station.ipdb.gz", compression='gzip')
+print(db.is_ipv4(), db.is_ipv6())
+print(db.languages())
+print(db.fields())
+print(db.build_time())
+print(db.find_map("117.136.83.55", "CN"))
+</pre>
