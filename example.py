@@ -1,10 +1,10 @@
 from  __future__ import unicode_literals
-import ipdb,sys
+import ipdb_py,sys
 
 
 
 def test_free():
-    db = ipdb.City("c:/work/ipdb/mydata4vipweek2.ipdb")
+    db = ipdb_py.City("c:/work/ipdb/mydata4vipweek2.ipdb")
     print(db.is_ipv4(), db.is_ipv6())
     print(db.languages())
     print(db.fields())
@@ -22,7 +22,7 @@ def test_free():
 
 
 def test_city_ipv4():
-    db = ipdb.City("c:/tiantexin/download/mydata4vipday4_cn.ipdb")
+    db = ipdb_py.City("c:/tiantexin/download/mydata4vipday4_cn.ipdb")
     print(db.is_ipv4(), db.is_ipv6())
     print(db.languages())
     print(db.fields())
@@ -33,7 +33,7 @@ def test_city_ipv4():
 
 
 def test_city_ipv6():
-    db = ipdb.City("c:/work/ipdb/city.ipv6.ipdb")
+    db = ipdb_py.City("c:/work/ipdb/city.ipv6.ipdb")
     print(db.is_ipv4(), db.is_ipv6())
     print(db.languages())
     print(db.fields())
@@ -47,7 +47,7 @@ def test_city_ipv6():
 
 
 def test_district():
-    db = ipdb.District("c:/work/ipdb/china_district.ipdb")
+    db = ipdb_py.District("c:/work/ipdb/china_district.ipdb")
     print(db.is_ipv4(), db.is_ipv6())
     print(db.languages())
     print(db.fields())
@@ -56,21 +56,21 @@ def test_district():
         for B in range (255):
             try:
                 print(db.find("%d.%d.114.144" % (A, B), "CN"))
-            except ipdb.IPNotFound as e:
+            except ipdb_py.IPNotFound as e:
                 print(e)
 
     try:
         print(db.find("1.1.1.1", "CN"))
-    except ipdb.IPNotFound as e: # ip not found
+    except ipdb_py.IPNotFound as e: # ip not found
         print(e)
-    except ipdb.DatabaseError as e: # database file size error
+    except ipdb_py.DatabaseError as e: # database file size error
         print(e)
     print(db.find_map("1.12.13.255", "CN"))
     print(db.find_info("1.12.13.255", "CN").country_name)
 
 
 def test_base_station():
-    db = ipdb.BaseStation("c:/work/ipdb/base_station.ipdb")
+    db = ipdb_py.BaseStation("c:/work/ipdb/base_station.ipdb")
     print(db.is_ipv4(), db.is_ipv6())
     print(db.languages())
     print(db.fields())
@@ -79,7 +79,7 @@ def test_base_station():
 
 
 def test_idc_list():
-    db = ipdb.IDC("c:/work/ipdb/idc_list.ipdb")
+    db = ipdb_py.IDC("c:/work/ipdb/idc_list.ipdb")
     print(db.find_map("1.1.1.1", "CN"))
     print(db.find_map("8.8.8.8", "CN"))
 
