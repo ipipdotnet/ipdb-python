@@ -26,12 +26,13 @@ class Reader:
     _meta = {}
     data = b""
 
-    _file_size = 0
-
     _v4offset = 0
     _v6offsetCache = {}
 
     def __init__(self, name):
+        self._v4offset = 0
+        self._v6offsetCache = {}
+
         file = open(name, "rb")
         self.data = file.read()
         self._file_size = len(self.data)
