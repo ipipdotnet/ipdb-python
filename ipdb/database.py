@@ -89,7 +89,7 @@ class Reader:
                 break
             node = self._read_node(node, (1 & (packed[idx >> 3] >> 7 - (idx % 8))))
             idx += 1
-            if idx == 16:
+            if idx == 16 and bit_count == 128:
                 self._v6offsetCache[key] = node
 
         if node > self._meta.node_count:

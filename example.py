@@ -1,6 +1,7 @@
 from  __future__ import unicode_literals
 import ipdb,sys
 
+import pandas as pd
 
 
 def test_free():
@@ -31,14 +32,27 @@ def test_city_ipv4():
     print(db.find_map("8.8.8.8", "CN"))
     print(db.find_info("118.28.1.1", "CN").country_name)
 
+import  ipaddress
+
+def test_city_ipv6_test():
+
+    db = ipdb.City("c:/work/ipdb/mydata6vipday2.ipdb")
+
+    print(db.find("2001:44c8:4644:1191:3c41:724d:e391:51b0", "CN"))
+    print(db.find_map("2a04:3543:1000:2310:ecb3:3eff:fef0:20e1", "CN"))
+    print(db.find_info("2a04:3543:1000:2310:ecb3:3eff:fef0:20e1", "CN").country_name)
 
 def test_city_ipv6():
-    db = ipdb.City("c:/work/ipdb/city.ipv6.ipdb")
-    print(db.is_ipv4(), db.is_ipv6())
-    print(db.languages())
-    print(db.fields())
-    print(db.build_time())
-    print(db.find("2001:250:200::", "CN"))
+    db4 = ipdb.City("c:/tiantexin/download/mydata4vipday4_cn.ipdb")
+    db = ipdb.City("c:/work/ipdb/mydata6vipday2.ipdb")
+
+    df = pd.read_csv("C:\\Users\\GAOCHUNHUI\\Documents\\WeChat Files\\daxime\\FileStorage\\File\\2019-10\\ipiptest\\ip_data.csv")
+    for i, row in df.iterrows():
+        if ipaddress.ip_address(row['request_ip']).version == 4:
+
+            db4.find(row['request_ip'], "CN")
+        else:
+            print(db.find(row['request_ip'], "CN"), row['request_ip'])
 
     try:
         print(db.find("2000:FFFF:FFFF:FFFF:FFFF:FFFF:FFFF:FFFF", "CN"))
@@ -84,7 +98,7 @@ def test_idc_list():
     print(db.find_map("8.8.8.8", "CN"))
 
 # test_city_ipv4()
-# test_city_ipv6()
+# test_city_ipv6_test()
 # test_base_station()
-test_district()
+test_city_ipv6()
 # test_city_ipv4()
