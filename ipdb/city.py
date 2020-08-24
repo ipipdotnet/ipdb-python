@@ -4,7 +4,8 @@
 """
 
 from .database import Reader
-
+from .district import DistrictInfo
+import json
 
 class CityInfo:
     country_name = ""
@@ -27,11 +28,22 @@ class CityInfo:
     currency_code = ""
     currency_name = ""
     anycast = ""
+    line = ""
+    district_info = ""
 
     def __init__(self, **kwargs):
         self._map = kwargs
         for key in self._map:
             self.__dict__[key] = self._map[key]
+
+    def get_district(self):
+        if len(self.district_info) == 0:
+            return None
+        o = json.loads(self.district_info)
+        o["country_name"] = self.country_name
+        o["region_name"] = self.region_name
+        o["city_name"] = self.city_name
+        return DistrictInfo(**o)
 
 
 class City:

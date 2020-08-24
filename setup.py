@@ -4,7 +4,7 @@ from setuptools import setup
 
 setup(
     name='ipip-ipdb',
-    version="1.3.2",
+    version="1.5.0",
     description=(
         'IPIP.net officially supported IP database ipdb format parsing library'
     ),

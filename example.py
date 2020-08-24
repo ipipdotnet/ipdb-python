@@ -3,6 +3,13 @@ import ipdb,sys
 
 import pandas as pd
 
+def test_city_district():
+    db = ipdb.City("c:/work/ipdb/test.ipdb")
+    print(db.fields())
+    city = db.find_info(u"111.199.81.160", "CN")
+    qx = city.get_district()
+    if qx != None:
+        print(qx.city_name, qx.district_name)
 
 def test_free():
     db = ipdb.City("c:/work/ipdb/mydata4vipweek2.ipdb")
@@ -100,5 +107,5 @@ def test_idc_list():
 # test_city_ipv4()
 # test_city_ipv6_test()
 # test_base_station()
-test_city_ipv6()
+test_city_district()
 # test_city_ipv4()
