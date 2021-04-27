@@ -5,6 +5,8 @@
 
 from .database import Reader
 from .district import DistrictInfo
+from .asn import ASNInfo
+
 import json
 
 class CityInfo:
@@ -29,7 +31,11 @@ class CityInfo:
     currency_name = ""
     anycast = ""
     line = ""
+    usage_type = ""
     district_info = ""
+    route = ""
+    asn = ""
+    asn_info = ""
 
     def __init__(self, **kwargs):
         self._map = kwargs
@@ -44,6 +50,16 @@ class CityInfo:
         o["region_name"] = self.region_name
         o["city_name"] = self.city_name
         return DistrictInfo(**o)
+
+    def get_asninfo(self):
+        if len(self.asn_info) == 0:
+            return None
+        ls = json.loads(self.asn_info)
+        result = []
+        for i in ls:
+            result.append(ASNInfo(**i))
+
+        return result
 
 
 class City:
