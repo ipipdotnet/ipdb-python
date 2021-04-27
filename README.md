@@ -66,6 +66,16 @@ print(db.find_map("1.12.13.255", "CN"))
 print(db.find_info("1.12.13.255", "CN").country_name)
   </pre>
 
+### 适用于IPDB格式的 IDC 库
+<pre>
+import ipdb
+>>> db = ipdb.IDC("/path/to/idc_list.ipdb") 
+>>> print db.find_info(u"8.142.10.33", "CN").isp_domain
+aliyun.com
+>>> print db.find_info(u"8.142.10.33", "CN").idc
+IDC
+</pre>
+
 ### 适用于IPDB格式的基站 IPv4 库
 <pre>
 import ipdb
