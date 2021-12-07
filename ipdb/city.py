@@ -13,6 +13,7 @@ class CityInfo:
     country_name = ""
     region_name = ""
     city_name = ""
+    district_name = ""
     owner_domain = ""
     isp_domain = ""
     latitude = ""
