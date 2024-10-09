@@ -12,7 +12,7 @@ IPIP.net officially supported IP database ipdb format parsing library
 <pre><code>pip install ipaddress</code></pre>
 
 ## Code Example
-### 适用于IPDB格式的每周高级版，每日标准版，每日高级版，每日专业版，每日旗舰版
+### 适用于IPDB格式
   <pre><code>
 import ipdb
 
